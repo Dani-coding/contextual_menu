@@ -159,7 +159,10 @@ function createContextMenu({ items, onSelect }) {
     itemEl.classList.add('cm-active');
     activeIndex = items.indexOf(itemEl);
 
-    closeSubmenus(itemEl.closest('.cm-menu'));
+    const isInSubmenu = itemEl.closest('.cm-submenu');
+    if (!isInSubmenu) {
+      closeSubmenus(itemEl.closest('.cm-menu'));
+    }
 
     if (itemData.children) {
       clearHoverTimeout();
@@ -273,7 +276,7 @@ function createContextMenu({ items, onSelect }) {
 
   function onClickOutside(e) {
     if (justOpened) return;
-    if (menuEl && !menuEl.contains(e.target)) {
+    if (!e.target.closest('.cm-menu')) {
       close();
     }
   }
