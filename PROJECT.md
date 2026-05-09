@@ -93,27 +93,11 @@ Orden de los items según el array (el orden importa).
 | Escape | `null` |
 | Scroll documento | `null` |
 
-## Estilo visual
 
-- Oscuro
-- Sin animaciones en v1
-- Preparado para iconos futuros
-
-## Roadmap
-
-### v1 (actual)
-- Items de texto
-- Submenús anidados
-- Hover para abrir submenús
-- Posicionamiento inteligente
-- `disabled`
-- `divider`
-- Cierre por scroll / Escape / click fuera
 
 ### Futuro
 - Iconos en items
 - Atajos de teclado (`shortcut`)
 - Items checked
-- Inputs custom (color, range, text, font)
 - Eventos: `onOpen`, `onClose`, `onHover`
 - Menú horizontal (estilo barra de herramientas)

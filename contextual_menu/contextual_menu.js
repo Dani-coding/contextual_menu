@@ -165,10 +165,7 @@ function createContextMenu({ items, theme, overrides, onSelect }) {
 
   function closeSubmenus(container) {
     const submenus = container.querySelectorAll('.cm-submenu');
-    submenus.forEach(s => {
-      s.classList.remove('cm-submenu-open');
-      setTimeout(() => s.remove(), 150);
-    });
+    submenus.forEach(s => s.remove());
   }
 
   function handleItemClick(itemEl, itemData) {

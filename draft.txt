@@ -10,3 +10,14 @@ Estructura de archivos y su función:
 Lógica: al crearse recibe un array u objeto (decidir) anidado que le da los datos del menú y posible submenús. (cadenas de texto)
 Internamente: cada elemento es un reglón, navegación con hover, símbolo > al final si hay submenú. El submenú se abré con click o si el cursor permanece más de 0.5s (usar evento leave). Si se hace click en elemento sin submenú devuelve texto pinchado y se cierra (desaparece). Si se hace click fuera o escape, el menú se cierra y devuelve null
 Externamente (API): crear (se pasan los datos del contenido), activar (se pasa la posición dónde debe aparece, el menú aparece ahí siempre delante y toma el foco)
+
+Vamos a crear en la carpeta de la herramienta dos archivos .md, uno "how_to_use" y otro "how_it_works".
+El primero debe documentar el uso de la aplicación, funcionalidad, métodos y personalización. Puede contener ejemplos. Piensa que está orientado a clientes que quiera usar la aplicación tal cual en su proyecto pero no la conozcan previamente.
+El segundo debe documentar la estructura de la herrameinta, la implementación, la lógica del código, y todo lo necesario para entender bien cómo está diseñada. Piensa que está orientado a clientes que quieran modificar y/o ampliar el cógido para su uso personal, pero que no lo conocen previamente.
+Para todo ello: 
+1- analiza bien el código actual y los archivos del proyecto.
+2- crea los archivos mencionados con los epígrafes adecuados.
+3- rellena la información neceseria de cada epígrafe.
+4- comprueba el resultado: (está todo lo necesario, el texto es claro y sencillo, está todo en español, se puede mejorar algo)
+
+IMPORTANTE: si durante antes de empezar o durante el proceso tienes alguna duda o consulta que hacerme, para y me preguntas. NO modificar el código
