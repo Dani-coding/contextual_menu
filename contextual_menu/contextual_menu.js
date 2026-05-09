@@ -1,10 +1,75 @@
 let activeMenu = null;
 
-function createContextMenu({ items, onSelect }) {
+const THEMES = {
+  dark: {
+    background: '#1e1e1e',
+    text: '#e0e0e0',
+    border: '#333',
+    hover: '#3a3a3a',
+    disabled: '#666',
+    shadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+    borderRadius: '6px',
+    fontSize: '14px',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    arrow: '#888',
+    divider: '#333',
+    inputAccent: '#888'
+  },
+  light: {
+    background: '#ffffff',
+    text: '#595959',
+    border: '#ddd',
+    hover: '#f0f0f0',
+    disabled: '#aaa',
+    shadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+    borderRadius: '6px',
+    fontSize: '14px',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    arrow: '#888',
+    divider: '#ddd',
+    inputAccent: '#888'
+  }
+};
+
+const DEFAULT_THEME = THEMES.dark;
+
+function resolveTheme(theme, overrides) {
+  let base = DEFAULT_THEME;
+
+  if (theme === 'dark' || theme === 'light') {
+    base = THEMES[theme];
+  } else if (theme && typeof theme === 'object') {
+    base = { ...DEFAULT_THEME, ...theme };
+  }
+
+  if (overrides && typeof overrides === 'object') {
+    return { ...base, ...overrides };
+  }
+
+  return base;
+}
+
+function applyTheme(el, theme) {
+    el.style.setProperty('--cm-background', theme.background);
+    el.style.setProperty('--cm-text', theme.text);
+    el.style.setProperty('--cm-border', theme.border);
+    el.style.setProperty('--cm-hover', theme.hover);
+    el.style.setProperty('--cm-disabled', theme.disabled);
+    el.style.setProperty('--cm-shadow', theme.shadow);
+    el.style.setProperty('--cm-border-radius', theme.borderRadius);
+    el.style.setProperty('--cm-font-size', theme.fontSize);
+    el.style.setProperty('--cm-font-family', theme.fontFamily);
+    el.style.setProperty('--cm-arrow', theme.arrow);
+    el.style.setProperty('--cm-divider', theme.divider);
+    el.style.setProperty('--cm-input-accent', theme.inputAccent);
+  }
+
+function createContextMenu({ items, theme, overrides, onSelect }) {
   let menuEl = null;
   let hoverTimeout = null;
   let isOpen = false;
   let justOpened = false;
+  let resolvedTheme = null;
 
   function close(silent = false, selectedText = null) {
     if (!isOpen) return;
@@ -298,12 +363,15 @@ function createContextMenu({ items, onSelect }) {
       activeMenu.close(true);
     }
 
+    resolvedTheme = resolveTheme(theme, overrides);
+
     menuEl = document.createElement('div');
     menuEl.className = 'cm-menu';
     menuEl.style.visibility = 'hidden';
     menuEl.style.display = 'block';
     document.body.appendChild(menuEl);
 
+    applyTheme(menuEl, resolvedTheme);
     renderMenu(menuEl, items);
 
     if (items.some(item => item.icon)) {
