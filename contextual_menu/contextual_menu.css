@@ -1,0 +1,81 @@
+.cm-menu {
+  position: fixed;
+  z-index: 10000;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 4px 0;
+  min-width: 150px;
+  max-width: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #e0e0e0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cm-menu.cm-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cm-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.1s;
+}
+
+.cm-item:hover,
+.cm-item.cm-active {
+  background: #3a3a3a;
+}
+
+.cm-item.cm-disabled {
+  color: #666;
+  cursor: default;
+  pointer-events: none;
+}
+
+.cm-label {
+  flex: 1;
+}
+
+.cm-arrow {
+  margin-left: 12px;
+  color: #888;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.cm-divider {
+  height: 1px;
+  background: #333;
+  margin: 4px 8px;
+}
+
+.cm-submenu {
+  position: fixed;
+  z-index: 10001;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 4px 0;
+  min-width: 150px;
+  max-width: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #e0e0e0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cm-submenu.cm-submenu-open {
+  opacity: 1;
+  pointer-events: auto;
+}

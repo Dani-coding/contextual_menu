@@ -1,0 +1,12 @@
+Estamos en la fase inicial de un pequeño de proyecto. Vamos a plantearlo y dar ideas.
+
+Ámbito web: uso de html, css y vanilla js, todo sin dependencias.
+
+Idea inicial: crear una herramienta reutilizable que genere menú contextuales (menú tipo click con botón izquierdo del ratón).
+
+Estructura de archivos y su función: 
+1) en el root proyecto básico para testear el uso de la herramienta (index.html, styles.css y script.js). Consistirá simplemente en un main con cuatro divs en grid 2x2, estilo oscuro y la lógica que cada vez que se haga click en uno de los divs se llame a un menú contextutal diferente (para testeo de la herramienta) lo que de devuelva el menú se mostrará como texto en grande dentro del propio div.
+2) en carpeta context_menu: es donde estará la herramienta exportable a cualquier proyecto. Tendrá archivo .js y .css con el mismo nombre de la carpeta. Estilo oscuro.
+Lógica: al crearse recibe un array u objeto (decidir) anidado que le da los datos del menú y posible submenús. (cadenas de texto)
+Internamente: cada elemento es un reglón, navegación con hover, símbolo > al final si hay submenú. El submenú se abré con click o si el cursor permanece más de 0.5s (usar evento leave). Si se hace click en elemento sin submenú devuelve texto pinchado y se cierra (desaparece). Si se hace click fuera o escape, el menú se cierra y devuelve null
+Externamente (API): crear (se pasan los datos del contenido), activar (se pasa la posición dónde debe aparece, el menú aparece ahí siempre delante y toma el foco)
