@@ -79,3 +79,72 @@
   opacity: 1;
   pointer-events: auto;
 }
+
+.cm-icon {
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.cm-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.cm-input-wrapper input[type="color"] {
+  width: 28px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cm-input-wrapper input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.cm-input-wrapper input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 2px;
+}
+
+.cm-input-wrapper input[type="range"] {
+  flex: 1;
+  height: 4px;
+  background: #444;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.cm-input-wrapper input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #e0e0e0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.cm-input-wrapper .cm-range-value {
+  min-width: 30px;
+  text-align: right;
+  font-size: 12px;
+  color: #888;
+}
+
+.cm-input-wrapper input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #888;
+}
+
+.cm-input-wrapper label {
+  cursor: pointer;
+  flex: 1;
+}

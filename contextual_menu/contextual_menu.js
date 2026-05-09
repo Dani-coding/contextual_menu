@@ -148,6 +148,10 @@ function createContextMenu({ items, onSelect }) {
     container.innerHTML = '';
 
     items.forEach(item => {
+      if (!item.text && !item.icon && !item.type && !item.render && !item.children && !item.divider) {
+        return;
+      }
+
       if (item.divider) {
         const div = document.createElement('div');
         div.className = 'cm-divider';
@@ -158,9 +162,103 @@ function createContextMenu({ items, onSelect }) {
       const el = document.createElement('div');
       el.className = 'cm-item' + (item.disabled ? ' cm-disabled' : '');
 
+      if (item.type) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'cm-input-wrapper';
+
+        if (item.icon) {
+          const icon = document.createElement('span');
+          icon.className = 'cm-icon';
+          icon.textContent = item.icon;
+          wrapper.appendChild(icon);
+        }
+
+        if (item.type === 'color') {
+          const colorInput = document.createElement('input');
+          colorInput.type = 'color';
+          colorInput.value = item.value || '#000000';
+          colorInput.addEventListener('input', (e) => {
+            e.stopPropagation();
+            item.onChange?.(colorInput.value);
+          });
+          colorInput.addEventListener('click', (e) => e.stopPropagation());
+          wrapper.appendChild(colorInput);
+        }
+
+        if (item.type === 'range') {
+          const rangeInput = document.createElement('input');
+          rangeInput.type = 'range';
+          rangeInput.min = item.min ?? 0;
+          rangeInput.max = item.max ?? 100;
+          rangeInput.value = item.value ?? item.min ?? 0;
+
+          const valueDisplay = document.createElement('span');
+          valueDisplay.className = 'cm-range-value';
+          valueDisplay.textContent = rangeInput.value;
+
+          rangeInput.addEventListener('input', (e) => {
+            e.stopPropagation();
+            valueDisplay.textContent = rangeInput.value;
+            item.onChange?.(Number(rangeInput.value));
+          });
+          rangeInput.addEventListener('click', (e) => e.stopPropagation());
+
+          wrapper.appendChild(rangeInput);
+          wrapper.appendChild(valueDisplay);
+        }
+
+        if (item.type === 'checkbox') {
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.checked = item.value ?? false;
+
+          if (item.text) {
+            const label = document.createElement('label');
+            label.textContent = item.text;
+            checkbox.addEventListener('change', (e) => {
+              e.stopPropagation();
+              item.onChange?.(checkbox.checked);
+            });
+            checkbox.addEventListener('click', (e) => e.stopPropagation());
+            wrapper.appendChild(checkbox);
+            wrapper.appendChild(label);
+          } else {
+            checkbox.addEventListener('change', (e) => {
+              e.stopPropagation();
+              item.onChange?.(checkbox.checked);
+            });
+            checkbox.addEventListener('click', (e) => e.stopPropagation());
+            wrapper.appendChild(checkbox);
+          }
+        }
+
+        el.appendChild(wrapper);
+        container.appendChild(el);
+        return;
+      }
+
+      if (item.render) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'cm-input-wrapper';
+        item.render(wrapper, {
+          onSelect: (val) => close(false, val),
+          onChange: (val) => item.onChange?.(val)
+        });
+        el.appendChild(wrapper);
+        container.appendChild(el);
+        return;
+      }
+
+      if (item.icon) {
+        const icon = document.createElement('span');
+        icon.className = 'cm-icon';
+        icon.textContent = item.icon;
+        el.appendChild(icon);
+      }
+
       const label = document.createElement('span');
       label.className = 'cm-label';
-      label.textContent = item.text;
+      label.textContent = item.text || '';
       el.appendChild(label);
 
       if (item.children) {

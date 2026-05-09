@@ -2,9 +2,9 @@ const menus = [
   {
     id: 'cell1',
     items: [
-      { text: 'Nuevo archivo' },
-      { text: 'Abrir...' },
-      { text: 'Guardar' },
+      { text: 'Nuevo archivo', icon: '📄' },
+      { text: 'Abrir...', icon: '📂' },
+      { text: 'Guardar', icon: '💾' },
       { divider: true },
       { text: 'Cerrar' }
     ]
@@ -24,6 +24,7 @@ const menus = [
     items: [
       {
         text: 'Formato',
+        icon: '🎨',
         children: [
           { text: 'Negrita' },
           { text: 'Cursiva' },
@@ -45,20 +46,29 @@ const menus = [
   {
     id: 'cell4',
     items: [
-      { text: 'Opción A' },
-      { text: 'Opción B' },
-      { text: 'Opción C' },
+      { text: 'Color', type: 'color', value: '#ff0000', onChange: (c) => console.log('Color:', c) },
+      { text: 'Opacidad', type: 'range', min: 0, max: 100, value: 75, onChange: (v) => console.log('Opacidad:', v) },
+      { divider: true },
+      { text: 'Activar modo oscuro', type: 'checkbox', value: false, onChange: (v) => console.log('Checkbox:', v) },
       { divider: true },
       {
-        text: 'Submenú',
-        children: [
-          { text: 'Elemento 1' },
-          { text: 'Elemento 2' },
-          { text: 'Elemento 3' }
-        ]
-      },
-      { divider: true },
-      { text: 'Opción D', disabled: true }
+        text: 'Estilo',
+        render: (container, { onChange }) => {
+          const select = document.createElement('select');
+          select.style.cssText = 'background: #333; color: #e0e0e0; border: 1px solid #555; padding: 4px; width: 100%;';
+          select.innerHTML = `
+            <option value="moderno">Moderno</option>
+            <option value="clasico">Clásico</option>
+            <option value="minimalista">Minimalista</option>
+          `;
+          select.addEventListener('change', (e) => {
+            e.stopPropagation();
+            onChange(select.value);
+          });
+          select.addEventListener('click', (e) => e.stopPropagation());
+          container.appendChild(select);
+        }
+      }
     ]
   }
 ];
@@ -71,7 +81,9 @@ const menuInstances = menus.map(config => {
   const menu = createContextMenu({
     items: config.items,
     onSelect: (text) => {
-      if (text !== null) {
+      if (text === null) {
+        result.textContent = resultText;
+      } else {
         result.textContent = text;
       }
     }
