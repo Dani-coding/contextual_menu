@@ -14,13 +14,13 @@ menu_contextual/
 ├── index.html
 ├── styles.css
 ├── script.js
-└── contextual-menu/
-    ├── contextual-menu.js
-    └── contextual-menu.css
+└── contextual_menu/
+    ├── contextual_menu.js
+    └── contextual_menu.css
 ```
 
 - `index.html`, `styles.css`, `script.js` — proyecto de test básico
-- `contextual-menu.js` y `contextual-menu.css` — módulo exportable
+- `contextual_menu.js` y `contextual_menu.css` — módulo exportable
 
 ## Proyecto de test
 
@@ -48,8 +48,8 @@ menu.destroy();       // limpieza del DOM
 ```js
 {
   text: string;         // texto del item
-  children?: Item[];   // submenú (array recursivo)
-  disabled?: boolean;  // item no clickeable
+  children?: Item[];  // submenú (array recursivo)
+  disabled?: boolean;   // item no clickeable
   divider?: boolean;   // línea separadora
   // --- Futuros ---
   icon?: string;       // SVG o clase
@@ -67,7 +67,7 @@ Orden de los items según el array (el orden importa).
 
 ### Apertura
 - Se llama a `menu.activate(x, y)`
-- El menú aparece en `(x, y)` y toma el foco
+- El menú aparece en `(x, y)`
 
 ### Posicionamiento
 1. Intenta derecha + abajo
@@ -77,20 +77,18 @@ Orden de los items según el array (el orden importa).
 
 ### Navegación
 - **Ratón:** hover abre submenú tras 500ms
-- **Teclado:** ↑ ↓ para mover, Enter para seleccionar
-- Click o Enter en item → devuelve texto, cierra menú
+- Click en item → devuelve texto, cierra menú
 - Click fuera / Escape / Scroll → cierra, devuelve `null`
 
 ### Submenús
 - Símbolo `>` al final si hay `children`
 - Se abre con click o con hover tras 500ms
-- Es navegable con teclado
 
 ## Eventos de retorno
 
 | Acción | Resultado |
 |--------|-----------|
-| Click/Enter en item | `onSelect(texto)` |
+| Click en item | `onSelect(texto)` |
 | Click fuera | `null` |
 | Escape | `null` |
 | Scroll documento | `null` |
@@ -106,11 +104,11 @@ Orden de los items según el array (el orden importa).
 ### v1 (actual)
 - Items de texto
 - Submenús anidados
-- Navegación teclado + hover
+- Hover para abrir submenús
 - Posicionamiento inteligente
 - `disabled`
 - `divider`
-- Cierre por scroll
+- Cierre por scroll / Escape / click fuera
 
 ### Futuro
 - Iconos en items

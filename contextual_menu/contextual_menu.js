@@ -2,7 +2,6 @@ let activeMenu = null;
 
 function createContextMenu({ items, onSelect }) {
   let menuEl = null;
-  let activeIndex = -1;
   let hoverTimeout = null;
   let isOpen = false;
   let justOpened = false;
@@ -10,7 +9,6 @@ function createContextMenu({ items, onSelect }) {
   function close(silent = false, selectedText = null) {
     if (!isOpen) return;
     isOpen = false;
-    activeIndex = -1;
     clearHoverTimeout();
     if (menuEl && menuEl.parentNode) {
       menuEl.parentNode.removeChild(menuEl);
@@ -31,19 +29,14 @@ function createContextMenu({ items, onSelect }) {
     }
   }
 
-  function getMenuWidth() {
-    return menuEl ? menuEl.offsetWidth : 150;
-  }
-
-  function getMenuHeight() {
-    return menuEl ? menuEl.offsetHeight : 30;
-  }
-
   function positionMenu(el, x, y) {
-    el.getBoundingClientRect();
     const vw = window.innerWidth;
     const vh = window.innerHeight;
+    el.style.visibility = 'hidden';
+    el.style.display = 'block';
     const rect = el.getBoundingClientRect();
+    el.style.visibility = '';
+    el.style.display = '';
 
     let left = x;
     let top = y;
@@ -63,11 +56,7 @@ function createContextMenu({ items, onSelect }) {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const parentRect = parentEl.getBoundingClientRect();
-    submenuEl.style.visibility = 'hidden';
-    submenuEl.style.display = 'block';
     const subRect = submenuEl.getBoundingClientRect();
-    submenuEl.style.visibility = '';
-    submenuEl.style.display = '';
 
     let left = parentRect.right;
     let top = parentRect.top;
@@ -86,24 +75,6 @@ function createContextMenu({ items, onSelect }) {
     submenuEl.style.top = top + 'px';
   }
 
-  function getAllItems(container) {
-    return Array.from(container.querySelectorAll('.cm-item:not(.cm-disabled)'));
-  }
-
-  function navigate(delta) {
-    const items = getAllItems(menuEl);
-    if (!items.length) return;
-
-    items[activeIndex]?.classList.remove('cm-active');
-
-    activeIndex += delta;
-    if (activeIndex < 0) activeIndex = items.length - 1;
-    if (activeIndex >= items.length) activeIndex = 0;
-
-    items[activeIndex].classList.add('cm-active');
-    items[activeIndex].scrollIntoView({ block: 'nearest' });
-  }
-
   function openSubmenu(itemEl, itemData) {
     const existing = itemEl.querySelector('.cm-submenu');
     if (existing) return;
@@ -113,18 +84,18 @@ function createContextMenu({ items, onSelect }) {
     renderMenu(submenu, itemData.children, itemEl);
 
     const parent = itemEl.closest('.cm-menu');
-    positionSubmenu(submenu, itemEl);
+    submenu.style.visibility = 'hidden';
+    submenu.style.display = 'block';
     parent.appendChild(submenu);
+
+    positionSubmenu(submenu, itemEl);
+
+    submenu.style.visibility = '';
+    submenu.style.display = '';
 
     requestAnimationFrame(() => {
       submenu.classList.add('cm-submenu-open');
     });
-
-    const firstItem = submenu.querySelector('.cm-item');
-    if (firstItem) {
-      activeIndex = 0;
-      firstItem.classList.add('cm-active');
-    }
   }
 
   function closeSubmenus(container) {
@@ -153,11 +124,7 @@ function createContextMenu({ items, onSelect }) {
   function handleItemHover(itemEl, itemData) {
     if (itemData.disabled) return;
 
-    const items = getAllItems(menuEl);
-    items.forEach(i => i.classList.remove('cm-active'));
-
     itemEl.classList.add('cm-active');
-    activeIndex = items.indexOf(itemEl);
 
     const isInSubmenu = itemEl.closest('.cm-submenu');
     if (!isInSubmenu) {
@@ -172,7 +139,12 @@ function createContextMenu({ items, onSelect }) {
     }
   }
 
-  function renderMenu(container, items, parentItem) {
+  function handleItemLeave(itemEl) {
+    itemEl.classList.remove('cm-active');
+    clearHoverTimeout();
+  }
+
+  function renderMenu(container, items) {
     container.innerHTML = '';
 
     items.forEach(item => {
@@ -209,7 +181,7 @@ function createContextMenu({ items, onSelect }) {
         });
 
         el.addEventListener('mouseleave', () => {
-          clearHoverTimeout();
+          handleItemLeave(el);
         });
       }
 
@@ -246,25 +218,9 @@ function createContextMenu({ items, onSelect }) {
 
   function onKeyDown(e) {
     if (!isOpen) return;
-
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        navigate(1);
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        navigate(-1);
-        break;
-      case 'Enter':
-        e.preventDefault();
-        const active = menuEl?.querySelector('.cm-active');
-        if (active) active.click();
-        break;
-      case 'Escape':
-        e.preventDefault();
-        close();
-        break;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      close();
     }
   }
 
