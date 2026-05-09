@@ -254,6 +254,10 @@ function createContextMenu({ items, onSelect }) {
         icon.className = 'cm-icon';
         icon.textContent = item.icon;
         el.appendChild(icon);
+      } else {
+        const emptyIcon = document.createElement('span');
+        emptyIcon.className = 'cm-icon';
+        el.appendChild(emptyIcon);
       }
 
       const label = document.createElement('span');
@@ -301,6 +305,10 @@ function createContextMenu({ items, onSelect }) {
     document.body.appendChild(menuEl);
 
     renderMenu(menuEl, items);
+
+    if (items.some(item => item.icon)) {
+      menuEl.classList.add('cm-has-icons');
+    }
 
     positionMenu(menuEl, x, y);
 
